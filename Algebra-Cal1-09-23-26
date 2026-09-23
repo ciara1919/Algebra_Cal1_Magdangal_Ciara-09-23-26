@@ -1,0 +1,28 @@
+import math 
+
+a = 9
+b = 7
+c = 4
+x = 6
+
+x_linear = (c - b) / a
+
+disc = b**2 - 4*a*c
+real_part = -b / (2 * a)
+imag_part = math.sqrt(abs(disc)) / (2 * a)
+
+f_x = a * (x**2) + b * x + c
+
+f_prime = 2 * a * x + b
+
+h = 1e-5
+limit_val = a * ((x + h)**2) + b * (x + h) + c
+
+integral_val = (a/3) * (x**3) * (b / 2) * (x**2) + c * x
+
+print(f"Linear: {x_linear}")
+print(f"Quadratic: {real_part} +/- {imag_part}i")
+print(f"Evaluate f(6): {f_x}")
+print(f"Derivatine f'(6): {f_prime}")
+print(f"Limit approx: {limit_val}")
+print(f"Integral (0 to 6): {integral_val}")
