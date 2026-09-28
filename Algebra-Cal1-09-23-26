@@ -28,3 +28,160 @@ print(f"Limit approx: {limit_val}")
 print(f"Integral (0 to 6): {integral_val}")
 
 
+import math
+
+def solve_linear():
+    print("\n--- 1. Solve a linear equation (ax + b = c) ---")
+    try:
+        a = float(input("Enter a: "))
+        b = float(input("Enter b: "))
+        c = float(input("Enter c: "))
+        if a == 0:
+            if b == c:
+                print("Infinite solutions (identity equation).")
+            else:
+                print("No solution (contradictory equation).")
+        else:
+            x = (c - b) / a
+            print(f"Solution: x = {x}")
+    except ValueError:
+        print("Invalid input. Please enter valid numbers.")
+
+def solve_quadratic():
+    print("\n--- 2. Solve a quadratic equation (ax^2 + bx + c = 0) ---")
+    try:
+        a = float(input("Enter a: "))
+        b = float(input("Enter b: "))
+        c = float(input("Enter c: "))
+        
+        if a == 0:
+            print("Error: 'a' cannot be 0 in a quadratic equation.")
+            return
+            
+        discriminant = b**2 - 4*a*c
+        if discriminant > 0:
+            x1 = (-b + math.sqrt(discriminant)) / (2*a)
+            x2 = (-b - math.sqrt(discriminant)) / (2*a)
+            print(f"Two distinct real roots:\n  x1 = {x1}\n  x2 = {x2}")
+        elif discriminant == 0:
+            x = -b / (2*a)
+            print(f"One repeated real root:\n  x = {x}")
+        else:
+            real_part = -b / (2*a)
+            imag_part = math.sqrt(-discriminant) / (2*a)
+            print(f"Two complex roots:\n  x1 = {real_part} + {imag_part}i\n  x2 = {real_part} - {imag_part}i")
+    except ValueError:
+        print("Invalid input. Please enter valid numbers.")
+
+def evaluate_fx():
+    print("\n--- 3. Evaluate f(x) = ax^2 + bx at c ---")
+    try:
+        a = float(input("Enter a: "))
+        b = float(input("Enter b: "))
+        # Note: Following exact prompt instruction for option 3 formula omitting +c
+        c = float(input("Enter c (the x-value to evaluate at): "))
+        result = a * (c**2) + b * c
+        print(f"f({c}) = {result}")
+    except ValueError:
+        print("Invalid input. Please enter valid numbers.")
+
+def find_derivative():
+    print("\n--- 4. Find the Derivative f(x) at a point ---")
+    print("Estimating using numerical differentiation: lim (h->0) [f(x+h) - f(x)] / h")
+    try:
+        a = float(input("Enter a: "))
+        b = float(input("Enter b: "))
+        c = float(input("Enter c: "))
+        x = float(input("Enter the point x to find the derivative: "))
+        
+        # Helper function for f(x)
+        def f(val): return a * (val**2) + b * val + c
+        
+        # Numerical estimation using a tiny step h
+        h = 1e-7
+        derivative_est = (f(x + h) - f(x)) / h
+        print(f"Estimated f'({x}) ≈ {derivative_est:.5f}")
+    except ValueError:
+        print("Invalid input. Please enter valid numbers.")
+
+def estimate_limit():
+    print("\n--- 5. Estimate a limit as x approaches a value ---")
+    print("Estimating by tracking outputs as x approaches the target from both sides...")
+    try:
+        a = float(input("Enter a: "))
+        b = float(input("Enter b: "))
+        c = float(input("Enter c: "))
+        target = float(input("Enter the value x approaches: "))
+        
+        def f(val): return a * (val**2) + b * val + c
+        
+        # Show a table of values approaching from the left and right
+        print(f"\n{'x (Left approach)':<18} | {'f(x)':<12} || {'x (Right approach)':<18} | {'f(x)':<12}")
+        print("-" * 70)
+        
+        limit_approx = 0
+        for i in range(1, 5):
+            delta = 1 / (10**i)
+            left_x = target - delta
+            right_x = target + delta
+            print(f"{left_x:<18.4f} | {f(left_x):<12.5f} || {right_x:<18.4f} | {f(right_x):<12.5f}")
+            limit_approx = f(target + delta) # capture the finest precision step
+            
+        print(f"\nEstimated Limit as x -> {target} is ≈ {limit_approx:.5f}")
+    except ValueError:
+        print("Invalid input. Please enter valid numbers.")
+
+def compute_integral():
+    print("\n--- 6. Compute a definite integral of f(x) ---")
+    print("Calculating exact total area under the curve using the fundamental theorem of calculus.")
+    try:
+        a = float(input("Enter a: "))
+        b = float(input("Enter b: "))
+        c = float(input("Enter c: "))
+        lower = float(input("Enter lower limit of integration: "))
+        upper = float(input("Enter upper limit of integration: "))
+        
+        # Antiderivative F(x) = (a/3)x^3 + (b/2)x^2 + cx
+        def F(x):
+            return (a / 3) * (x**3) + (b / 2) * (x**2) + c * x
+            
+        result = F(upper) - F(lower)
+        print(f"The definite integral of f(x) from {lower} to {upper} is {result}")
+    except ValueError:
+        print("Invalid input. Please enter valid numbers.")
+
+def main():
+    while True:
+        print("\n======= Algebra & Calculus Menu =======")
+        print("1. Solve a linear equation (ax + b = c)")
+        print("2. Solve a quadratic equation (ax^2 + bx + c = 0)")
+        print("3. Evaluate f(x) = ax^2 + bx at c")
+        print("4. Find the Derivative f(x) at a point")
+        print("5. Estimate a limit as x approaches a value")
+        print("6. Compute a definite integral of f(x)")
+        print("7. Quit")
+        
+        choice = input("Enter your choice (1-7): ").strip()
+        
+        if choice == '1':
+            solve_linear()
+        elif choice == '2':
+            solve_quadratic()
+        elif choice == '3':
+            evaluate_fx()
+        elif choice == '4':
+            find_derivative()
+        elif choice == '5':
+            estimate_limit()
+        elif choice == '6':
+            compute_integral()
+        elif choice == '7':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please select a number from 1 to 7.")
+
+if __name__ == '__main__':
+    main()
+
+
